@@ -14,11 +14,22 @@
     }
   }
 
-  // session_start();
-  //
-  // if (isset($_SESSION['user_id'])){
-  //   $resltLog = mysqli_query("SELECT ")
-  // }
+  $duration = (5 * 60);
+if(isset($_SESSION['started'])){
+
+    $time = ($duration - (time() - $_SESSION['started']));
+
+    if($time <= 0){
+
+        session_unset();
+        session_destroy();
+    }
+}
+else{
+
+  $_SESSION['started'] = time();
+}
+
 ?>
 <!DOCTYPE html>
 <html>

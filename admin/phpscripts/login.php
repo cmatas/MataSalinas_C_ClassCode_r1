@@ -16,15 +16,33 @@
       if(mysqli_query($link, $loginstring)){
         $update = "UPDATE tbl_user SET user_ip='{$ip}' WHERE user_id={$id}";
         $updatequery = mysqli_query($link, $update);
+
+        // $attemptsQuer = "UPDATE tbl_user SET user_attempts= '0' WHERE user_name='{$_SESSION['username']}'"
+        // $setattempts=mysqli_query($link, $attemptsQuer);
+
       }
       redirect_to("admin_index.php");
     }else{
       $message = "Learn how to type mens";
       return $message;
 
-      // if($username = $_SESSION['user_name'] && $password !== $_SESSION['user_pass']){
-      //
-      // }
+      if($username = $_SESSION['username'] && $password !== $_SESSION['user_pass']){
+
+        $userID = mysqli_real_escape_string($_POST['username']);
+        $password = md5(mysqli_real_escape_string($_POST['password']));
+
+        $checkloginQuer = mysqli_query("SELECT * FROM tbl_user WHERE user_name = '{$userID}' AND Password = '{$password}'") or die(mysqli_error());
+
+      } else {
+
+        if (isset($_SESSION['LoggedAttempts'])){
+            $_SESSION['LoggedAttempts']++;
+          }else{
+            $_SESSION['LoggedAttempts'] = 0;
+          }
+
+          $loginQuer = "UPDATE tbl_user SET user_attempts WHERE ";
+      }
     }
 
     mysqli_close($link);
